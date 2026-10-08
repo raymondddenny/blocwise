@@ -29,9 +29,10 @@ void main() {
       // Reads the source so a key added as a constant but not to `all`
       // (and therefore never fetched) fails here instead of in production.
       final source = File('lib/core/flags/flag_keys.dart').readAsStringSync();
-      final declared = RegExp(
-        r"static const \w+ = '([^']+)'",
-      ).allMatches(source).map((m) => m.group(1)!).toSet();
+      final declared = RegExp(r"static const \w+ = '([^']+)'")
+          .allMatches(source)
+          .map((m) => m.group(1)!)
+          .toSet();
 
       expect(declared, isNotEmpty);
       expect(FlagKeys.all.toSet(), declared);

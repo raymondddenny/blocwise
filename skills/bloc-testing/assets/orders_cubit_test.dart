@@ -43,9 +43,9 @@ void main() {
   group('OrdersCubit.load', () {
     blocTest<OrdersCubit, OrdersState>(
       'emits loading then the first page',
-      setUp: () => when(
-        () => repository.fetchOrders(page: any(named: 'page')),
-      ).thenAnswer((_) async => const Ok([_paid, _pending])),
+      setUp: () =>
+          when(() => repository.fetchOrders(page: any(named: 'page')))
+              .thenAnswer((_) async => const Ok([_paid, _pending])),
       build: () => OrdersCubit(repository),
       act: (cubit) => cubit.load(),
       expect: () => const [
@@ -61,9 +61,9 @@ void main() {
 
     blocTest<OrdersCubit, OrdersState>(
       'emits failure when the first load fails',
-      setUp: () => when(
-        () => repository.fetchOrders(page: any(named: 'page')),
-      ).thenAnswer((_) async => const Err(NetworkFailure())),
+      setUp: () =>
+          when(() => repository.fetchOrders(page: any(named: 'page')))
+              .thenAnswer((_) async => const Err(NetworkFailure())),
       build: () => OrdersCubit(repository),
       act: (cubit) => cubit.load(),
       expect: () => const [
@@ -75,9 +75,9 @@ void main() {
     final bug = StateError('bad json');
     blocTest<OrdersCubit, OrdersState>(
       'reports an unexpected failure through addError',
-      setUp: () => when(
-        () => repository.fetchOrders(page: any(named: 'page')),
-      ).thenAnswer((_) async => Err(UnexpectedFailure(bug))),
+      setUp: () =>
+          when(() => repository.fetchOrders(page: any(named: 'page')))
+              .thenAnswer((_) async => Err(UnexpectedFailure(bug))),
       build: () => OrdersCubit(repository),
       act: (cubit) => cubit.load(),
       expect: () => [
@@ -92,9 +92,8 @@ void main() {
     );
 
     test('does not throw when closed mid-request', () async {
-      when(
-        () => repository.fetchOrders(page: any(named: 'page')),
-      ).thenAnswer((_) async => const Ok([_paid]));
+      when(() => repository.fetchOrders(page: any(named: 'page')))
+          .thenAnswer((_) async => const Ok([_paid]));
       final cubit = OrdersCubit(repository);
 
       final pending = cubit.load();
@@ -107,9 +106,9 @@ void main() {
   group('OrdersCubit.refresh and loadMore', () {
     blocTest<OrdersCubit, OrdersState>(
       'a failed refresh keeps the list on screen and flags the failure',
-      setUp: () => when(
-        () => repository.fetchOrders(page: any(named: 'page')),
-      ).thenAnswer((_) async => const Err(TimeoutFailure())),
+      setUp: () =>
+          when(() => repository.fetchOrders(page: any(named: 'page')))
+              .thenAnswer((_) async => const Err(TimeoutFailure())),
       build: () => OrdersCubit(repository),
       seed: () => _loaded,
       act: (cubit) => cubit.refresh(),
@@ -121,9 +120,9 @@ void main() {
 
     blocTest<OrdersCubit, OrdersState>(
       'an empty page ends pagination',
-      setUp: () => when(
-        () => repository.fetchOrders(page: 2),
-      ).thenAnswer((_) async => const Ok([])),
+      setUp: () =>
+          when(() => repository.fetchOrders(page: 2))
+              .thenAnswer((_) async => const Ok([])),
       build: () => OrdersCubit(repository),
       seed: () => _loaded,
       act: (cubit) async {
@@ -143,12 +142,10 @@ void main() {
       'a load-more response that lands after a refresh is dropped',
       () async {
         final page2 = Completer<Result<List<Order>>>();
-        when(
-          () => repository.fetchOrders(page: 2),
-        ).thenAnswer((_) => page2.future);
-        when(
-          () => repository.fetchOrders(page: 1),
-        ).thenAnswer((_) async => const Ok([_pending]));
+        when(() => repository.fetchOrders(page: 2))
+            .thenAnswer((_) => page2.future);
+        when(() => repository.fetchOrders(page: 1))
+            .thenAnswer((_) async => const Ok([_pending]));
         final cubit = OrdersCubit(repository)..emit(_loaded);
         addTearDown(cubit.close);
 
@@ -169,9 +166,9 @@ void main() {
 
     blocTest<PlaceOrderCubit, ActionStatus>(
       'succeeds once and records order_placed',
-      setUp: () => when(
-        () => repository.placeOrder(any()),
-      ).thenAnswer((_) async => const Ok('o-3')),
+      setUp: () =>
+          when(() => repository.placeOrder(any()))
+              .thenAnswer((_) async => const Ok('o-3')),
       build: () => PlaceOrderCubit(repository, analytics),
       act: (cubit) => cubit.place(_draft),
       expect: () => [
@@ -188,9 +185,9 @@ void main() {
 
     blocTest<PlaceOrderCubit, ActionStatus>(
       'a second tap while the first is in flight is ignored',
-      setUp: () => when(
-        () => repository.placeOrder(any()),
-      ).thenAnswer((_) async => const Ok('o-3')),
+      setUp: () =>
+          when(() => repository.placeOrder(any()))
+              .thenAnswer((_) async => const Ok('o-3')),
       build: () => PlaceOrderCubit(repository, analytics),
       act: (cubit) => Future.wait([cubit.place(_draft), cubit.place(_draft)]),
       expect: () => [isA<ActionRunning>(), isA<ActionSucceeded<String>>()],
@@ -199,9 +196,9 @@ void main() {
 
     blocTest<PlaceOrderCubit, ActionStatus>(
       'an unknown outcome surfaces as such, is not retried, is not tracked',
-      setUp: () => when(
-        () => repository.placeOrder(any()),
-      ).thenAnswer((_) async => const Err(OutcomeUnknownFailure())),
+      setUp: () =>
+          when(() => repository.placeOrder(any()))
+              .thenAnswer((_) async => const Err(OutcomeUnknownFailure())),
       build: () => PlaceOrderCubit(repository, analytics),
       act: (cubit) => cubit.place(_draft),
       expect: () => [

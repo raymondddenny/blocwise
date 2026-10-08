@@ -234,7 +234,7 @@ final copy = KeyedFailureCopy(
   lookup: (key) => switch (key) {
     'failure.network' => l10n.errorNoConnection,
     'failure.outcome_unknown' => l10n.errorCheckingStatus,
-    'failure.code.daily_limit_reached' => l10n.errorDailyLimit,
+    'failure.code.card_expired' => l10n.errorCardExpired,
     _ => null,
   },
   fallback: l10n.errorGeneric,

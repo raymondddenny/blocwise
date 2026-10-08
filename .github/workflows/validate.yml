@@ -22,4 +22,6 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          # Pinned: dart format output changes between releases. Bump it and reformat the assets together.
+          flutter-version: 3.47.6
       - run: bash tests/compile_assets.sh

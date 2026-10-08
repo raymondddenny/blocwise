@@ -1,5 +1,7 @@
 # blocwise
 
+![blocwise: presentation, domain and data layers, the action states and the eight skills](docs/media/blocwise.gif)
+
 Engineering skills for AI coding agents working on Flutter apps built with `flutter_bloc`.
 
 Each skill is a short, opinionated playbook: the rules, the reason behind each rule, the mistakes that keep happening in real apps, and copy-ready Dart that compiles.
