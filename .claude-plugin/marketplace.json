@@ -1,0 +1,11 @@
+{
+  "name": "blocwise",
+  "owner": { "name": "Denny Raymond" },
+  "plugins": [
+    {
+      "name": "blocwise",
+      "source": "./",
+      "description": "Flutter + flutter_bloc engineering skills, learned shipping a production payments app."
+    }
+  ]
+}

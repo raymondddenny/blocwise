@@ -1,0 +1,8 @@
+{
+  "name": "blocwise",
+  "version": "0.1.0",
+  "description": "Agent skills for Flutter apps built on flutter_bloc: feature architecture, typed failures, SDK ports, cubit state, UI effects, testing, leak checks and feature flags.",
+  "author": { "name": "Denny Raymond" },
+  "license": "MIT",
+  "keywords": ["flutter", "bloc", "cubit", "clean-architecture", "skills"]
+}
