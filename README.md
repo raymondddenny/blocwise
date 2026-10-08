@@ -1,6 +1,9 @@
 # blocwise
 
-![blocwise: presentation, domain and data layers, the action states and the eight skills](docs/media/blocwise.gif)
+<picture>
+  <source media="(prefers-reduced-motion: reduce)" srcset="docs/media/banner.png">
+  <img src="docs/media/blocwise.gif" alt="blocwise: presentation, domain and data layers, the action states and the eight skills">
+</picture>
 
 Engineering skills for AI coding agents working on Flutter apps built with `flutter_bloc`.
 
