@@ -1,6 +1,6 @@
 ---
 name: bloc-failures-and-results
-description: Use when handling errors in a flutter_bloc app: adding a repository call, mapping Dio or HTTP errors, writing try/catch in data code, returning Result/Ok/Err, showing an error message or toast, handling backend error codes, or building a payment, transfer, order or any request that changes server state (timeouts, retries, "did it go through?", status polling). Also for reviewing code that shows an unknown status as success or retries a POST.
+description: 'Use when handling errors in a flutter_bloc app: adding a repository call, mapping Dio or HTTP errors, writing try/catch in data code, returning Result/Ok/Err, showing an error message or toast, handling backend error codes, or building a payment, transfer, order or any request that changes server state (timeouts, retries, "did it go through?", status polling). Also for reviewing code that shows an unknown status as success or retries a POST.'
 ---
 
 # Typed failures and Result

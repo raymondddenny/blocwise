@@ -1,6 +1,6 @@
 ---
 name: bloc-feature-flags
-description: Use when adding, reading, renaming or removing a remote feature flag in a Flutter/flutter_bloc app; gating a feature or merging it dark behind a launch gate; wiring a kill switch; choosing flag defaults; setting up an A/B test or variant; deciding when flags refresh; or reviewing flag code. Vendor-agnostic: Firebase Remote Config, PostHog, LaunchDarkly, Statsig or an in-house endpoint behind one port.
+description: 'Use when adding, reading, renaming or removing a remote feature flag in a Flutter/flutter_bloc app; gating a feature or merging it dark behind a launch gate; wiring a kill switch; choosing flag defaults; setting up an A/B test or variant; deciding when flags refresh; or reviewing flag code. Vendor-agnostic: Firebase Remote Config, PostHog, LaunchDarkly, Statsig or an in-house endpoint behind one port.'
 ---
 
 # Bloc feature flags

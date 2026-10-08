@@ -55,7 +55,11 @@ The skills refer to each other and share one set of core types, so install the w
 
 ### Any agent that reads skill folders
 
-Copy the folders under `skills/` into your agent's skills directory (for Claude Code: `~/.claude/skills/` or `.claude/skills/` in your project).
+```bash
+npx skills add raymondddenny/blocwise
+```
+
+Or copy the folders under `skills/` into your agent's skills directory (for Claude Code: `~/.claude/skills/` or `.claude/skills/` in your project).
 
 ## Use it
 

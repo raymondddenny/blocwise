@@ -17,6 +17,11 @@ for dir in skills/*/; do
   [ "$fm_name" = "$name" ] || err "$name: frontmatter name '$fm_name' does not match folder"
   desc=$(awk '/^---$/{n++; next} n==1 && /^description:/{sub(/^description:[ ]*/, ""); print; exit}' "$file")
   [ -n "$desc" ] || err "$name: missing description"
+  # Unquoted ": " or " #" is invalid YAML; strict parsers (npx skills) skip the skill silently.
+  case "$desc" in
+    \'*|\"*) ;;
+    *': '*|*' #'*) err "$name: description needs quotes (contains ': ' or ' #')" ;;
+  esac
   [ "${#desc}" -le 1024 ] || err "$name: description longer than 1024 chars"
   for s in "$dir"scripts/*.sh; do
     [ -e "$s" ] || continue
