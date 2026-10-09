@@ -40,6 +40,7 @@ bloc-sdk-ports/assets/crash_reporter_port.dart|lib/core/crash/crash_reporter_por
 bloc-sdk-ports/assets/url_launcher_port.dart|lib/core/platform/url_launcher_port.dart
 bloc-sdk-ports/assets/share_port.dart|lib/core/platform/share_port.dart
 bloc-sdk-ports/assets/redact.dart|lib/core/logging/redact.dart
+bloc-sdk-ports/assets/redact_test.dart|test/core/logging/redact_test.dart
 bloc-sdk-ports/assets/di_registration_example.dart|lib/core/di/core_ports_module.dart
 bloc-state-management/assets/safe_emit.dart|lib/core/bloc/safe_emit.dart
 bloc-state-management/assets/action_status.dart|lib/core/bloc/action_status.dart

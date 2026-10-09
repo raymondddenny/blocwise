@@ -214,6 +214,7 @@ The cubit runs this in `submit()` and emits the error for a listener to show. Ke
 
 ## Gotchas
 
+- **A time-based cache of server-owned state.** A profile with a verification or account status changes on the server without any write from this device, so a 30-second cache can show the old status or let a stale gate pass. Reuse a value only where you know it is fresh (the response session restore just fetched, consumed once by the first screen), and drop the cache after every write that can change it, including one that failed or timed out.
 - A field left out of an Equatable's `props` never triggers a rebuild. Add every field, including lists and nullable fields.
 - Emitting a state equal to the current one does nothing. If a toast must fire twice for the same failure, clear the failure in between or use `ActionCubit`, whose `ActionRunning` sits between two failures.
 - **`BlocProvider.value` with a fresh instance.** `BlocProvider.value(value: OrdersCubit(...))` never closes it. Use `create`.

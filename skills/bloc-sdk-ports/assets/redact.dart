@@ -25,11 +25,20 @@ final _keyValue = RegExp(
   '("[^"]*"|\'[^\']*\'|[^\\s&,;}\\]]+)',
   caseSensitive: false,
 );
+// Compound names that embed a secret word (`session_id`, `refresh_token_v2`,
+// `X-Amz-Credential`) slip past the whole-word match above.
+final _compoundSecret = RegExp(
+  '(["\']?\\b[\\w-]*(?:token|secret|session|password|signature|credential)'
+  '[\\w-]*["\']?\\s*[:=]\\s*)'
+  '("[^"]*"|\'[^\']*\'|[^\\s&,;}\\]]+)',
+  caseSensitive: false,
+);
 final _bearer = RegExp(
   r'\bBearer\s+[A-Za-z0-9\-._~+/]+=*',
   caseSensitive: false,
 );
-final _jwt = RegExp(r'\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]*');
+// Also a JWE: its encrypted-key part can be empty (`eyJ...` then `..`).
+final _jwt = RegExp(r'\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_.-]*');
 final _email = RegExp(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}');
 final _phone = RegExp(r'\+?\d[\d\s().-]{7,}\d');
 
@@ -42,6 +51,7 @@ String redact(String input) => input
     .replaceAll(_bearer, 'Bearer ***')
     .replaceAll(_jwt, '<jwt>')
     .replaceAllMapped(_keyValue, (m) => '${m[1]}***')
+    .replaceAllMapped(_compoundSecret, (m) => '${m[1]}***')
     .replaceAll(_email, '<email>')
     .replaceAll(_phone, '<phone>');
 

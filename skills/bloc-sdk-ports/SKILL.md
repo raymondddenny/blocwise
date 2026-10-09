@@ -196,7 +196,7 @@ Events are `Equatable`, so assertions compare whole events. Widget tests that bu
 - Ids are opaque. `identify` takes your internal user id or a hash, never an email, phone number or national id.
 - Properties are low-cardinality. Route names, not paths with ids. Enum names, not free text. Counts and buckets, not exact amounts. High-cardinality values also break vendor dashboards and cost money.
 - Server text never becomes a property. `UserActionFailed.reason` is a failure type key such as `network`, not an error message.
-- Free text goes through `redact` before a crash breadcrumb, a log line or a property. It masks `key=value` and JSON pairs for sensitive keys (token, password, pin, otp, email, phone...), bearer tokens, JWTs, emails and long digit runs. `redactMap` does the same for a property map.
+- Free text goes through `redact` before a crash breadcrumb, a log line or a property. It masks `key=value` and JSON pairs for sensitive keys (token, password, pin, otp, email, phone...) and for compound names that contain a secret word (`session_id`, `X-Amz-Credential`), bearer tokens, JWTs and JWEs (whose second part can be empty), emails and long digit runs. A URL is free text too: a link field such as a verification URL often carries its session token in the query string, under a key that looks harmless. `redactMap` does the same for a property map.
 - Release builds log nothing to the console. Route debug logging through a logger that is silent in release; device logs are readable by other tools.
 - URLs are allowlisted. `UrlLauncherAdapter` refuses schemes outside `https`, `mailto`, `tel` (configurable), and can pin hosts. URLs from push payloads, deep links and servers are untrusted input; `javascript:`, `file:` and `intent:` stop here.
 
