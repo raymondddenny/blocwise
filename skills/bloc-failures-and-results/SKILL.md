@@ -273,6 +273,31 @@ final class InsufficientFundsFailure extends AppFailure {
 
 Then map it with `onApiError` and add its key to `KeyedFailureCopy.typeKey`. Every exhaustive `switch` now fails to compile until it decides what to do, which is the point. If only the text differs, do not add a type: use the backend `code` and a `failure.code.<code>` string.
 
+## Adopting in an existing app
+
+An app that already returns `Either` (dartz or fpdart) with per-feature failure types does not need a rewrite.
+
+- `Either<F, T>` is `Result<T>` with the failure type in the signature: `Left` is `Err`, `Right` is `Ok`. Every rule in this skill applies unchanged.
+- Keep the per-feature failures. Add one outcome-unknown subclass to each sealed set whose repository has writes.
+- Put the "may have reached the server" signal on your HTTP client's exception: a `requestSent` flag that only a connect timeout clears, plus "5xx means unknown". This is the same table `DioApiClient` encodes.
+- Give each repository package one mapper and one guard, replacing the catch arms copied into every method:
+
+```dart
+OrdersFailure mapOrdersError(Object error, {required bool write}) =>
+    switch (error) {
+      HttpError(outcomeUnknown: true) when write =>
+        const OrdersFailure.outcomeUnknown(),
+      HttpError(statusCode: 401) => const OrdersFailure.unauthorized(),
+      HttpError(:final message) => OrdersFailure.server(message),
+      // Usually a 2xx whose body failed to parse: the write happened.
+      _ when write => const OrdersFailure.outcomeUnknown(),
+      _ => OrdersFailure.unexpected('$error'),
+    };
+```
+
+- `ActionCubit` works over `Either` too: make the failure a type parameter (`ActionCubit<F, T>`) and fold the result into the same four states.
+- Migrate one package per PR. Start with read-heavy or low-risk packages and leave money paths for last, each with an end-to-end reproduction. A codebase can be mixed for a while; a single package with two error systems cannot.
+
 ## Gotchas
 
 - **Retry interceptors on POST.** A Dio retry interceptor that retries on timeout will happily resend a payment. Restrict automatic retry to GET, or to requests carrying an idempotency key the server honours.

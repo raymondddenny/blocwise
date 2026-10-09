@@ -40,7 +40,7 @@ The skills refer to each other and share one set of core types, so install the w
 | --- | --- |
 | State | `flutter_bloc` / `bloc` 9 (Cubit by default, Bloc when you need event transformers) |
 | DI | `get_it` (`injectable` works too) |
-| Errors | The pack's own `Result` and sealed `AppFailure` (no `dartz` or `fpdart` needed) |
+| Errors | The pack's own `Result` and sealed `AppFailure` (no `dartz` or `fpdart` needed; an app already on `Either` keeps it, see `bloc-failures-and-results`) |
 | HTTP | `dio`, behind an app-owned `ApiClient` |
 | Tests | `bloc_test`, `mocktail`, `fake_async` |
 
