@@ -126,9 +126,12 @@ class SubmitPayment {
 | Money and date formatting | view (or a presentation formatter) with the current locale | cubit state strings, domain, data |
 | User-facing failure text | `FailureCopy.of(failure)` in presentation | `failure.message`, data layer |
 | Endpoint paths and JSON keys | `<feature>_api.dart` and models | repository impl, cubit |
+| Reshaping fetched data (strip, filter, hide rows) | repository or use case; one cubit helper only when it needs cubit-side context | one load path, a widget `build` |
 
 Cubit state holds raw values (an `int` of minor units, a `DateTime`), never preformatted strings. *Why: a locale change or a reformat then needs no cubit change, and tests compare numbers, not text.*
 If a domain rule depends on a flag, the cubit reads the flag and passes a plain `bool` into the domain call. *Why: domain stays pure and the flag stays at the edge where it can be removed in one diff.*
+A rule that reshapes fetched data runs where every reader gets it: the repository or a use case, so every cubit and screen sees the same rows.
+When it needs context only the cubit has (a flag, the active provider), put it in one cubit helper and map every `Result` through it: load, refresh, poll and stream updates alike. *Why: a rule wired into `load()` alone holds until the first pull-to-refresh, then the hidden value comes back, and a second screen reading the same state shows it too.*
 
 ## Build order for a new feature
 
@@ -194,6 +197,7 @@ Keep old and new paths side by side for one release when the call moves money or
 - **Barrel files that re-export `data/`.** One `export 'data/orders_repository_impl.dart';` in `orders.dart` lets every importer reach the impl. Barrels export domain only.
 - **Use case per endpoint.** Ten forwarding use cases add ten mocks to every test. Add one when it holds logic.
 - **"Shared" folder inside a feature that other features import.** It is a core module pretending to be a feature. Promote it.
+- **Reshape rule on one path.** `load()` maps the result through `hideArchived`, `refresh()` emits the raw list. The screen is right until the user pulls to refresh. Map every path through the same helper, or move the rule into the repository.
 - **Formatting in the cubit.** `state.totalText = '$20.00'` makes the cubit locale-dependent and turns equality checks into string checks.
 - **Generated stubs left as stubs.** `new_feature.sh` writes `id`-only entities and a `Retry` text button. Replace them before review; they are scaffolding, not defaults.
 
@@ -212,4 +216,5 @@ Keep old and new paths side by side for one release when the call moves money or
 - [ ] Each use case holds shared or non-trivial logic; no pure forwarders.
 - [ ] No import of another feature's `data/` or `presentation/`; widely shared types promoted to `core/`.
 - [ ] Validation rules in domain, validation timing in the cubit, formatting in the view, flag reads at the entry point.
+- [ ] A rule that reshapes fetched data lives in the repository or use case, or in one cubit helper that every load, refresh and poll path goes through.
 - [ ] Tests: model `fromJson` against a real payload, repository impl with a fake `ApiClient`, cubit with `bloc_test` and a mocked contract.
