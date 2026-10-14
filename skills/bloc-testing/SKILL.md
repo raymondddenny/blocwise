@@ -185,6 +185,7 @@ Use `assets/golden_test_template.dart`. Policy:
 
 - [ ] Bug fixes include a regression test that failed before the fix and reproduces the user-visible symptom.
 - [ ] Cubit tests cover success, each failure the UI treats differently, refresh-from-loaded via `seed`, and close-mid-request.
+- [ ] A cubit-side reshape rule (strip, filter, hide) is asserted on every path that writes the field: load, refresh and poll.
 - [ ] Mutating actions have a double-submit test (one repository call) and an unknown-outcome test (no retry, no success analytics).
 - [ ] Repository tests use `FakeApiClient` and cover every `RequestGuard` branch, with `OutcomeUnknownFailure` for write drops, timeouts and 5xx.
 - [ ] Analytics and crash assertions use recording fakes; no platform channels in unit or widget tests.
