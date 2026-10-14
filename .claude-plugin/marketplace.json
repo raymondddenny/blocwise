@@ -1,6 +1,9 @@
 {
   "name": "blocwise",
-  "owner": { "name": "Denny Raymond" },
+  "owner": {
+    "name": "Denny Raymond"
+  },
+  "description": "Agent skills for Flutter apps built on flutter_bloc, from one maintainer.",
   "plugins": [
     {
       "name": "blocwise",
